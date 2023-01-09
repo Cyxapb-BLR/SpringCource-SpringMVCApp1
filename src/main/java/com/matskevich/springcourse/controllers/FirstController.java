@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("first")
 public class FirstController {
     @GetMapping("hello")
-    public String helloPage(@RequestParam("firstname") String firstName,
-                            @RequestParam("lastname") String lastName) {
+    public String helloPage(@RequestParam(value = "firstname", required = false) String firstName,
+                            @RequestParam(value = "lastname", required = false) String lastName) {
         System.out.println("Hello, " + firstName + " " + lastName);
         return "first/hello";
     }
