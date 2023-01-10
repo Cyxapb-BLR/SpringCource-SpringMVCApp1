@@ -27,16 +27,26 @@ public class FirstController {
     public String calculate(@RequestParam(value = "a", required = false) Integer a,
                             @RequestParam(value = "b", required = false) Integer b,
                             @RequestParam(value = "action", required = false) String action, Model model) {
-        if (a != null && b != null && action != null) {
-            if (action.equals("addition")) {
-                model.addAttribute("result", a + b);
-                System.out.println(a + b);
-            } else if (action.equals("subtraction"))
-                model.addAttribute("result", a - b);
-            else if (action.equals("multiplication"))
-                model.addAttribute("result", a * b);
-            else if (action.equals("division") & b != 0)
-                model.addAttribute("result", a / b);
+        if (a != null && b != null) {
+            double result;
+            switch (action) {
+                case "multiplication":
+                    result = a * b;
+                    break;
+                case "division":
+                    result = a / (double) b;
+                    break;
+                case "subtraction":
+                    result = a - b;
+                    break;
+                case "addition":
+                    result = a + b;
+                    break;
+                default:
+                    result = 0;
+                    break;
+            }
+            model.addAttribute("result", result);
         }
         return "first/calculator";
     }
