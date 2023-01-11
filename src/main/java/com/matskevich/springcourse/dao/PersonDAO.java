@@ -60,6 +60,16 @@ public class PersonDAO {
     public void save(Person person) {
         /*person.setId(++PEOPLE_COUNT);
         people.add(person);*/
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "INSERT INTO Person VALUES(" + 1 + ",'" + person.getName() +
+                    "'," + person.getAge() + ",'" + person.getEmail() + "')";
+            //INSERT INTO Person VALUES(1,'Tom',25,'tom@gmail.com')
+
+            statement.executeUpdate(SQL);       //sent insert into table
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void update(int id, Person updatedPerson) {
@@ -70,6 +80,6 @@ public class PersonDAO {
     }
 
     public void delete(int id) {
-       // people.removeIf(p -> p.getId() == id);
+        // people.removeIf(p -> p.getId() == id);
     }
 }
