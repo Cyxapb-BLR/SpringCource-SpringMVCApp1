@@ -17,49 +17,14 @@ public class PersonDAO {
     public PersonDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     public List<Person> index() {
-        List<Person> people = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();     //contains sql-request
-            String SQL = "SELECT * FROM Person";
-            ResultSet resultSet = statement.executeQuery(SQL);  // get data from table
-
-            while (resultSet.next()) {      // check every lane from table
-                Person person = new Person();
-
-                person.setId(resultSet.getInt("id"));
-                person.setName(resultSet.getString("name"));
-                person.setAge(resultSet.getInt("age"));
-                person.setEmail(resultSet.getString("email"));
-
-                people.add(person);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return people;
+        return jdbcTemplate.query("SELECT * FROM Person", new PersonMapper());
     }
 
-    public Person show(int id) {
-        Person person;
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM Person WHERE id= ?");
-            preparedStatement.setInt(1, id);
-
-            ResultSet resultSet = preparedStatement.executeQuery();     //result from db
-            resultSet.next();       //first result with current id
-
-            person = new Person();
-            person.setId(resultSet.getInt("id"));
-            person.setName(resultSet.getString("name"));
-            person.setAge(resultSet.getInt("age"));
-            person.setEmail(resultSet.getString("email"));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return person;
+    public Person show(int id) {        // into "?" insert object with id
+        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new PersonMapper())
+                .stream().findAny().orElse(null);
     }
 
     public void save(Person person) {
