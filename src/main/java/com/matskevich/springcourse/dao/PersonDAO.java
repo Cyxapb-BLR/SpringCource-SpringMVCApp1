@@ -58,15 +58,15 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-        /*person.setId(++PEOPLE_COUNT);
-        people.add(person);*/
         try {
-            Statement statement = connection.createStatement();
-            String SQL = "INSERT INTO Person VALUES(" + 1 + ",'" + person.getName() +
-                    "'," + person.getAge() + ",'" + person.getEmail() + "')";
-            //INSERT INTO Person VALUES(1,'Tom',25,'tom@gmail.com')
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("INSERT INTO Person VALUES (1,?, ?,?)");
 
-            statement.executeUpdate(SQL);       //sent insert into table
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setInt(2, person.getAge());
+            preparedStatement.setString(3, person.getEmail());
+
+            preparedStatement.executeUpdate();       //sent insert into table
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
