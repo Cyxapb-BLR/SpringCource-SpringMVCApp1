@@ -1,6 +1,8 @@
 package com.matskevich.springcourse.dao;
 
 import com.matskevich.springcourse.models.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -9,26 +11,12 @@ import java.util.List;
 
 @Component
 public class PersonDAO {
-    private static int PEOPLE_COUNT;
-    private static final String URL = "jdbc:postgresql://localhost:5432/first_db";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "postgres";
+    private final JdbcTemplate jdbcTemplate;
 
-    private static Connection connection;
-
-    static { // create connection to postgresql
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Autowired
+    public PersonDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
-
     public List<Person> index() {
         List<Person> people = new ArrayList<>();
         try {
@@ -111,7 +99,7 @@ public class PersonDAO {
                     connection.prepareStatement("DELETE FROM Person WHERE id=?");
 
             preparedStatement.setInt(1, id);
-            
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
