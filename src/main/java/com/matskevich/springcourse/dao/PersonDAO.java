@@ -53,7 +53,7 @@ public class PersonDAO {
     }
 
     public Person show(int id) {
-        Person person ;
+        Person person;
         try {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("SELECT * FROM Person WHERE id= ?");
@@ -62,7 +62,7 @@ public class PersonDAO {
             ResultSet resultSet = preparedStatement.executeQuery();     //result from db
             resultSet.next();       //first result with current id
 
-            person=new Person();
+            person = new Person();
             person.setId(resultSet.getInt("id"));
             person.setName(resultSet.getString("name"));
             person.setAge(resultSet.getInt("age"));
@@ -90,10 +90,19 @@ public class PersonDAO {
     }
 
     public void update(int id, Person updatedPerson) {
-       /* Person personToBeUpdated = show(id);
-        personToBeUpdated.setName(updatedPerson.getName());
-        personToBeUpdated.setAge(updatedPerson.getAge());
-        personToBeUpdated.setEmail(updatedPerson.getEmail());*/
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("UPDATE Person SET name=?,age=?,email=? WHERE id=?");
+
+            preparedStatement.setString(1, updatedPerson.getName());
+            preparedStatement.setInt(2, updatedPerson.getAge());
+            preparedStatement.setString(3, updatedPerson.getEmail());
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(int id) {
