@@ -26,6 +26,12 @@ public class PersonDAO {
         return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
     }
 
+    public Person show(String email) { //для проверки валидации email, чтобы не получать ошибки из бд при существующем email
+        return jdbcTemplate.query("SELECT * FROM Person WHERE email=?",
+                        new Object[]{email}, new BeanPropertyRowMapper<>(Person.class))
+                .stream().findAny().orElse(null);
+    }
+
     public Person show(int id) {        // into "?" insert object with id
         return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
                         new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
