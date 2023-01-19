@@ -7,7 +7,7 @@
 <body>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor()+ ', ' + book.getYearOfPublishing()}">Value</p>
 <hr/>
-<p th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</p>
+<a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a>
 
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Delete">
