@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -24,7 +23,12 @@ public class BookDAO {
 
     public Book show(int id) {
         return jdbcTemplate.query("SELECT * FROM Book WHERE id =?",
-                new Object[]{id}, new BeanPropertyRowMapper<>(Book.class))
+                        new Object[]{id}, new BeanPropertyRowMapper<>(Book.class))
                 .stream().findAny().orElse(null);
+    }
+
+    public void save(Book book) {
+        jdbcTemplate.update("INSERT INTO Book(title, author, year_of_publishing) VALUES (?,?,?)",
+                book.getTitle(), book.getAuthor(), book.getYearOfPublishing());
     }
 }

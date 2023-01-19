@@ -5,7 +5,7 @@
     <title>Book</title>
 </head>
 <body>
-<p th:text="${book.getTitle() + ', ' + book.getAuthor()+ ', ' +book.getYearOfPublishing()}">Value</p>
+<p th:text="${book.getTitle() + ', ' + book.getAuthor()+ ', ' + book.getYearOfPublishing()}">Value</p>
 <hr/>
 <p th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</p>
 

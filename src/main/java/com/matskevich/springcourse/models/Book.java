@@ -13,12 +13,12 @@ public class Book {
     @Size(min = 2, max = 100, message = "Name should be between 2 and 100 characters")
     private String author;
     @Min(value = 1800, message = "Year should be greater than 1800")
-    private String yearOfPublishing;
+    private int yearOfPublishing;
 
     public Book() {
     }
 
-    public Book(String title, String author, String yearOfPublishing) {
+    public Book(String title, String author, int yearOfPublishing) {
         this.title = title;
         this.author = author;
         this.yearOfPublishing = yearOfPublishing;
@@ -48,11 +48,11 @@ public class Book {
         this.author = author;
     }
 
-    public String getYearOfPublishing() {
+    public int getYearOfPublishing() {
         return yearOfPublishing;
     }
 
-    public void setYearOfPublishing(String yearOfPublishing) {
+    public void setYearOfPublishing(int yearOfPublishing) {
         this.yearOfPublishing = yearOfPublishing;
     }
 }
