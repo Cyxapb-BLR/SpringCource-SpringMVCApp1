@@ -3,7 +3,6 @@ package com.matskevich.springcourse.controllers;
 import com.matskevich.springcourse.dao.BookDAO;
 import com.matskevich.springcourse.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +38,7 @@ public class BookController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("book") Book book, BindingResult bindingResult) {
+    public String create(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "books/new";
         }
@@ -54,12 +53,18 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("book") Book book, BindingResult bindingResult,
+    public String update(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors()) {
             return "people/edit";
         }
         bookDAO.update(id, book);
+        return "redirect:/books";
+    }
+
+    @DeleteMapping("{id}")
+    public String delete(@PathVariable("id") int id) {
+        bookDAO.delete(id);
         return "redirect:/books";
     }
 }
