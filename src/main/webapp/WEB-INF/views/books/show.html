@@ -9,16 +9,22 @@
 
 <div th:if="${owner}">
     <!--th:text:="'The book has been taken by ' + ${owner.getName()}"-->
-    <span>The book has been taken by </span> <span th:text="${owner.getName()}">Person Name</span>
+    <span>The book has been taken by </span> <b th:text="${owner.getName()}">Person Name</b>
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
         <input type="submit" value="Release book">
     </form>
 </div>
 
 <div th:if="${people}">
-    <span>The book is available. Who needs to reserve it?</span>
+    <span>The book is available. Who needs to assign it?</span>
     <br/>
-    <span>Choose person</span>
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+        <label for="person">Choose person:</label>
+        <select th:object="${person}" th:field="*{id}" id="person">
+            <option th:each="person:${people}" th:value="${person.getId()}" th:text="${person.getName()}"></option>
+        </select>
+        <input type="submit" value="assign">
+    </form>
 </div>
 
 <hr/>
