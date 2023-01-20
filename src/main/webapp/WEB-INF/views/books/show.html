@@ -23,7 +23,7 @@
         <select th:object="${person}" th:field="*{id}" id="person">
             <option th:each="person:${people}" th:value="${person.getId()}" th:text="${person.getName()}"></option>
         </select>
-        <input type="submit" value="assign">
+        <input type="submit" value="Assign book">
     </form>
 </div>
 
