@@ -7,9 +7,20 @@
 <body>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor()+ ', ' + book.getYearOfPublishing()}">Value</p>
 
-<form action="">
-    <input type="submit" value="Release book">
-</form>
+<div th:if="${owner}">
+    <!--th:text:="'The book has been taken by ' + ${owner.getName()}"-->
+    <span>The book has been taken by </span> <span th:text="${owner.getName()}">Person Name</span>
+    <form action="">
+        <input type="submit" value="Release book">
+    </form>
+</div>
+
+<div th:if="${people}">
+    <span>The book is available. Who needs to reserve it?</span>
+    <br/>
+    <span>Choose person</span>
+</div>
+
 <hr/>
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
     <input type="submit" value="Edit">
