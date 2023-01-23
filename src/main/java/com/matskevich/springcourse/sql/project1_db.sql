@@ -1,5 +1,5 @@
 CREATE
-database project1_db;
+    database project1_db;
 
 drop table Book;
 drop table Person;
@@ -18,4 +18,8 @@ create table Book
     year_of_publishing int CHECK ( year_of_publishing > 1500 )
 );
 
-SELECT *FROM book;
+SELECT *
+FROM book;
+
+INSERT INTO Book(title, author, year_of_publishing)
+VALUES ('title3', 'author3', '2000');
