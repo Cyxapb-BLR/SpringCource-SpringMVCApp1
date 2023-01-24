@@ -25,3 +25,5 @@ INSERT INTO Book(title, author, year_of_publishing)
 VALUES ('title3', 'author3', '2000');
 INSERT INTO Book(title, author, year_of_publishing, person_id)
 VALUES ('title4', 'author4', '2000', 2);
+
+SELECT Person. * FROM Person JOIN Book B on Person.id = B.person_id WHERE B.id=2;

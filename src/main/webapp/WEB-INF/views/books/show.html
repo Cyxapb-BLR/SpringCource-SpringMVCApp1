@@ -6,6 +6,21 @@
 </head>
 <body>
 <p th:text="|${book.getTitle()}, ${book.getAuthor()}, ${book.getYearOfPublishing()}|">Value</p>
+
+<div th:if="${owner}">
+    <span>The book has been taken by </span>
+    <a th:href="@{/people/{id}(id=${owner.getId()})}" th:text=" ${owner.getName()}">owner</a>
+</div>
+
+<div th:if="${people}">
+    <span>The book is available. Who needs to assign it?</span>
+    <br/>
+    <table th:each="person:${people}">
+        <a th:href="@{/people/{id}(id=${person.getId()})}"
+           th:text="${person.getName()}">person</a>
+    </table>
+
+</div>
 <hr/>
 
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
