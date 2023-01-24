@@ -10,6 +10,9 @@
 <div th:if="${owner}">
     <span>The book has been taken by </span>
     <a th:href="@{/people/{id}(id=${owner.getId()})}" th:text=" ${owner.getName()}">owner</a>
+    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
+        <input type="submit" value="Release book">
+    </form>
 </div>
 
 <div th:if="${people}">

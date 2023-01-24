@@ -78,4 +78,10 @@ public class BookController {
         bookDAO.delete(id);
         return "redirect:/books";
     }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        bookDAO.release(id);
+        return "redirect:/books/" + id;
+    }
 }
