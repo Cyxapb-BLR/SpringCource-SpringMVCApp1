@@ -1,9 +1,18 @@
 package com.matskevich.springcourse.models;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class Book {
     private int id;
+    @NotEmpty(message = "Title should not be empty")
+    @Size(min = 2, max = 100, message = "Title should be between 2 and 100 characters")
     private String title;
+    @NotEmpty(message = "Author should not be empty")
+    @Size(min = 2, max = 60, message = "Author should be between 2 and 60 characters")
     private String author;
+    @Min(value = 1500, message = "Year of publishing should be greater than 1500")
     private int yearOfPublishing;
 
     public Book() {
