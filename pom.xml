@@ -79,7 +79,12 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.4.28.Final</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>spring-mvc-app1</finalName>
