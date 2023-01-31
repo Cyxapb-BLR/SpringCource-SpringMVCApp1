@@ -29,19 +29,38 @@ public class PersonDAO {
         return people;
     }
 
-    public Person show(int id) {        // into "?" insert object with id
-        return null;
+    @Transactional(readOnly = true)
+    public Person show(int id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Person person = session.get(Person.class, id);
+
+        return person;
     }
 
+    @Transactional
     public void save(Person person) {
+        Session session = sessionFactory.getCurrentSession();
 
+        session.save(person);
     }
 
+    @Transactional
     public void update(int id, Person updatedPerson) {
+        Session session = sessionFactory.getCurrentSession();
 
+        Person person = session.get(Person.class, id);
+
+        person.setName(updatedPerson.getName());
+        person.setAge(updatedPerson.getAge());
+        person.setEmail(updatedPerson.getEmail());
     }
 
+    @Transactional
     public void delete(int id) {
+        Session session = sessionFactory.getCurrentSession();
 
+        Person person = session.get(Person.class, id);
+        session.remove(person);
     }
 }
