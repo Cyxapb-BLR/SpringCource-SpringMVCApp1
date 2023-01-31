@@ -19,13 +19,14 @@ public class PersonDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Person> index() {
         Session session = sessionFactory.getCurrentSession();
 
-        // regular hibernate code
+        List<Person> people = session.createQuery("SELECT p FROM Person p", Person.class)
+                .getResultList();
 
-        return null;
+        return people;
     }
 
     public Person show(int id) {        // into "?" insert object with id
