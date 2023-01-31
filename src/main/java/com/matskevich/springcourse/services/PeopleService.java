@@ -43,4 +43,8 @@ public class PeopleService {    //for business logic
     public void delete(int id) {
         peopleRepository.deleteById(id);
     }
+
+    public void test() {
+        System.out.println("testing here with debug. Inside Hibernate Transaction");
+    }
 }
