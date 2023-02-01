@@ -40,7 +40,13 @@ ALTER TABLE Person
     ADD COLUMN created_at TIMESTAMP;
 
 ALTER TABLE Person
-    ADD COLUMN mood int;    -- int because EnumType.ORDINAL
+    ADD COLUMN mood int; -- int because EnumType.ORDINAL
+
+ALTER TABLE Person
+    DROP COLUMN mood;
+
+ALTER TABLE Person
+    ADD COLUMN mood varchar; -- varchar because EnumType.STRING
 
 select *
 from Person;

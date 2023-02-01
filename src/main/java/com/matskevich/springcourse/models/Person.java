@@ -28,7 +28,7 @@ public class Person {
     @NotEmpty(message = "Email should not be empty")
     @Column(name = "email")
     private String email;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Mood mood;
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE) //for date in Spring
