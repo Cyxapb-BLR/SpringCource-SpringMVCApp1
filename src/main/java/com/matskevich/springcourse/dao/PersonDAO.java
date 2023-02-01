@@ -22,9 +22,16 @@ public class PersonDAO {
     public void TestNPlus1() {
         //Session session = sessionFactory.getCurrentSession();
         Session session = entityManager.unwrap(Session.class);
-        // 1 query:
+        /*// 1 query:
         List<Person> people = session.createQuery("SELECT p FROM Person p", Person.class).getResultList();
         // N queries to DB
+        for (Person person : people) {
+            System.out.println("Person " + person.getName() + " has: " + person.getItems());
+        }*/
+
+        // Solution
+        // SQL: A Left Join B -> result joint table
+        List<Person> people = session.createQuery("SELECT p FROM Person  p LEFT JOIN FETCH p.items").getResultList();
         for (Person person : people) {
             System.out.println("Person " + person.getName() + " has: " + person.getItems());
         }
