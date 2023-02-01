@@ -39,6 +39,9 @@ ALTER TABLE Person
 ALTER TABLE Person
     ADD COLUMN created_at TIMESTAMP;
 
+ALTER TABLE Person
+    ADD COLUMN mood int;    -- int because EnumType.ORDINAL
+
 select *
 from Person;
 

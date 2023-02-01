@@ -1,5 +1,6 @@
 package com.matskevich.springcourse.services;
 
+import com.matskevich.springcourse.models.Mood;
 import com.matskevich.springcourse.models.Person;
 import com.matskevich.springcourse.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class PeopleService {    //for business logic
 
     @Transactional // default readOnly = false
     public void save(Person person) {
+        person.setMood(Mood.CALM);
         person.setCreatedAt(new Date());  // add current time
         peopleRepository.save(person);
     }
