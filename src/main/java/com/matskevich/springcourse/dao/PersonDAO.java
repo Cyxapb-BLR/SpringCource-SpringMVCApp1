@@ -2,17 +2,35 @@ package com.matskevich.springcourse.dao;
 
 import com.matskevich.springcourse.models.Person;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Component
 public class PersonDAO {
+    private final EntityManager entityManager;
 
-    private final SessionFactory sessionFactory;
+    @Autowired
+    public PersonDAO(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    @Transactional(readOnly = true)
+    public void TestNPlus1() {
+        //Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.unwrap(Session.class);
+        // 1 query:
+        List<Person> people = session.createQuery("SELECT p FROM Person p", Person.class).getResultList();
+        // N queries to DB
+        for (Person person : people) {
+            System.out.println("Person " + person.getName() + " has: " + person.getItems());
+        }
+
+    }
+   /* private final SessionFactory sessionFactory;
 
     @Autowired
     public PersonDAO(SessionFactory sessionFactory) {
@@ -53,4 +71,5 @@ public class PersonDAO {
         Session session = sessionFactory.getCurrentSession();
         session.remove(session.get(Person.class, id));
     }
+*/
 }

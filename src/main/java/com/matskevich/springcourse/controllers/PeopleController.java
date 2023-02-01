@@ -1,5 +1,6 @@
 package com.matskevich.springcourse.controllers;
 
+import com.matskevich.springcourse.dao.PersonDAO;
 import com.matskevich.springcourse.models.Person;
 import com.matskevich.springcourse.services.ItemService;
 import com.matskevich.springcourse.services.PeopleService;
@@ -15,23 +16,27 @@ import javax.validation.Valid;
 @RequestMapping("/people")
 public class PeopleController {
     private final PeopleService peopleService;
+    private final PersonDAO personDAO;
     private final ItemService itemService;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, ItemService itemService) {
+    public PeopleController(PeopleService peopleService, PersonDAO personDAO, ItemService itemService) {
         this.peopleService = peopleService;
+        this.personDAO = personDAO;
         this.itemService = itemService;
     }
 
     @GetMapping()
     public String index(Model model) {
         // get all people from DAO and sent them to View
-        model.addAttribute("people", peopleService.findAll());
+       /* model.addAttribute("people", peopleService.findAll());
 
         itemService.findByItemName("Airpods");
         itemService.findByOwner(peopleService.findAll().get(0));
 
-        peopleService.test();
+        peopleService.test();*/
+
+        personDAO.TestNPlus1();
 
         return "people/index";
     }
