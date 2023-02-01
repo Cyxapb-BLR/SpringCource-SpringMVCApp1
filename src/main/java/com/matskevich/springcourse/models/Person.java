@@ -1,10 +1,13 @@
 package com.matskevich.springcourse.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,6 +28,13 @@ public class Person {
     @NotEmpty(message = "Email should not be empty")
     @Column(name = "email")
     private String email;
+    @Column(name = "date_of_birth")
+    @Temporal(TemporalType.DATE) //for date in Spring
+    @DateTimeFormat(pattern = "dd/MM/yyyy") // for date parsing
+    private Date dateOfBirth;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
     @OneToMany(mappedBy = "owner")
     private List<Item> items;
 
@@ -67,6 +77,22 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<Item> getItems() {

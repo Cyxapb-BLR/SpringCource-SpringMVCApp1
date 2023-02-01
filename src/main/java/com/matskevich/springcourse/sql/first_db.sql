@@ -30,6 +30,15 @@ VALUES (1, 'Playstation');
 INSERT INTO Item(person_id, item_name)
 VALUES (1, 'TV');
 
+-- Просто дата без точного времени
+ALTER TABLE Person
+    ADD COLUMN date_of_birth DATE;
+
+-- Точное время
+-- Значение timestamp сохраняются в секундах до и после полуночи 1 января 2000г
+ALTER TABLE Person
+    ADD COLUMN created_at TIMESTAMP;
+
 select *
 from Person;
 
