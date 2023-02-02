@@ -1,48 +1,64 @@
 package com.matskevich.springcourse.dao;
 
-import com.matskevich.springcourse.models.Book;
 import com.matskevich.springcourse.models.Person;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 public class PersonDAO {
-    private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PersonDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+    @Transactional(readOnly = true)
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("SELECT p FROM Person p", Person.class).getResultList();
+
     }
 
-    public Person show(int id) {        // into "?" insert object with id
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
-                        new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
-                .stream().findAny().orElse(null);
+    @Transactional(readOnly = true)
+    public Person show(int id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.get(Person.class, id);
     }
 
+    @Transactional
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person(name,year_of_birth) VALUES (?,?)", person.getName(), person.getYearOfBirth());
+        Session session = sessionFactory.getCurrentSession();
+
+        session.save(person);
     }
 
+    @Transactional
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE Person SET name=?,year_of_birth=? WHERE id=?",
-                updatedPerson.getName(), updatedPerson.getYearOfBirth(), id);
+        Session session = sessionFactory.getCurrentSession();
+        Person person = session.get(Person.class, id);
+
+        person.setName(updatedPerson.getName());
+        person.setYearOfBirth(updatedPerson.getYearOfBirth());
     }
 
+    @Transactional
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
+        Session session = sessionFactory.getCurrentSession();
+
+        session.remove(session.get(Person.class, id));
     }
 
-    public List<Book> getBookByPersonId(int id) {
+    /*public List<Book> getBookByPersonId(int id) {
+
         return jdbcTemplate.query("Select * FROM Book WHERE person_id=?",
                 new Object[]{id}, new BeanPropertyRowMapper<>(Book.class));
-    }
+    }*/
 }
