@@ -1,6 +1,7 @@
 package com.matskevich.springcourse.services;
 
 import com.matskevich.springcourse.models.Book;
+import com.matskevich.springcourse.models.Person;
 import com.matskevich.springcourse.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,10 @@ public class BooksService {
     @Transactional
     public void delete(int id) {
         bookRepository.deleteById(id);
+    }
+
+    public Optional<Person> findBookOwner(int id) {
+        Optional<Person> bookOwner = bookRepository.findById(id).map(Book::getBookOwner);
+        return bookOwner;
     }
 }

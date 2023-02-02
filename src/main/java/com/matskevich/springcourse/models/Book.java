@@ -23,6 +23,9 @@ public class Book {
     @Min(value = 1500, message = "Year of publishing should be greater than 1500")
     @Column(name = "year_of_publishing")
     private int yearOfPublishing;
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    private Person bookOwner;
 
     public Book() {
     }
@@ -63,5 +66,13 @@ public class Book {
 
     public void setYearOfPublishing(int yearOfPublishing) {
         this.yearOfPublishing = yearOfPublishing;
+    }
+
+    public Person getBookOwner() {
+        return bookOwner;
+    }
+
+    public void setBookOwner(Person bookOwner) {
+        this.bookOwner = bookOwner;
     }
 }

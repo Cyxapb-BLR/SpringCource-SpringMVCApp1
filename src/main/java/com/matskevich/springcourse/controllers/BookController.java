@@ -1,9 +1,9 @@
 package com.matskevich.springcourse.controllers;
 
-import com.matskevich.springcourse.dao.PersonDAO;
 import com.matskevich.springcourse.models.Book;
 import com.matskevich.springcourse.models.Person;
 import com.matskevich.springcourse.services.BooksService;
+import com.matskevich.springcourse.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,18 +11,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
     private final BooksService booksService;
-    private final PersonDAO personDAO;
+    private final PeopleService peopleService;
 
     @Autowired
-    public BookController(BooksService booksService, PersonDAO personDAO) {
+    public BookController(BooksService booksService, PeopleService peopleService) {
         this.booksService = booksService;
-        this.personDAO = personDAO;
+        this.peopleService = peopleService;
     }
+
 
     @GetMapping()
     public String index(Model model) {
@@ -33,10 +35,10 @@ public class BookController {
     @GetMapping("{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", booksService.findOne(id));
-        /*Optional<Person> bookOwner = bookDAO.getBookOwner(id);
+        Optional<Person> bookOwner = booksService.findBookOwner(id);
         if (bookOwner.isPresent()) {
             model.addAttribute("owner", bookOwner.get());
-        } else model.addAttribute("people", personDAO.index());*/
+        } else model.addAttribute("people", peopleService.findAll());
 
         return "books/show";
     }
