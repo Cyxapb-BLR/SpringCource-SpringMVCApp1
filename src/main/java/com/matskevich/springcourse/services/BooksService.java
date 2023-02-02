@@ -50,4 +50,14 @@ public class BooksService {
         Optional<Person> bookOwner = bookRepository.findById(id).map(Book::getBookOwner);
         return bookOwner;
     }
+
+    @Transactional
+    public void release(int id) {
+        bookRepository.findById(id).ifPresent(book -> book.setBookOwner(null));
+    }
+
+    @Transactional
+    public void assign(int id, Person selectedPerson) {
+        bookRepository.findById(id).ifPresent(book -> book.setBookOwner(selectedPerson));
+    }
 }
