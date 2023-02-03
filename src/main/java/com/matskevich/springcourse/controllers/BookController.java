@@ -29,12 +29,9 @@ public class BookController {
 
 
     @GetMapping()
-    public String index(Model model, @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear) {
-        List<Book> books = booksService.findAll();
-        if (sortByYear) {
-            books.sort(Comparator.comparingInt(Book::getYearOfPublishing));
-        }
-        model.addAttribute("books", books);
+    public String index(Model model,
+                        @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear) {
+        model.addAttribute("books", booksService.findAll(sortByYear));
         return "books/index";
     }
 

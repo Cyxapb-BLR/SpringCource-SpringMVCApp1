@@ -4,6 +4,7 @@ import com.matskevich.springcourse.models.Book;
 import com.matskevich.springcourse.models.Person;
 import com.matskevich.springcourse.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,11 @@ public class BooksService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<Book> findAll(boolean sortByYear) {
+        if (sortByYear)
+            return bookRepository.findAll(Sort.by("yearOfPublishing"));
+        else
+            return bookRepository.findAll();
     }
 
     public Book findOne(int id) {
