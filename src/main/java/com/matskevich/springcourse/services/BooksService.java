@@ -4,6 +4,7 @@ import com.matskevich.springcourse.models.Book;
 import com.matskevich.springcourse.models.Person;
 import com.matskevich.springcourse.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,13 @@ public class BooksService {
             return bookRepository.findAll(Sort.by("yearOfPublishing"));
         else
             return bookRepository.findAll();
+    }
+
+    public List<Book> findWithPagination(Integer page, Integer booksPerPage, boolean sortByYear) {
+        if (sortByYear)
+            return bookRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by("yearOfPublishing"))).getContent();
+        else
+            return bookRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
     }
 
     public Book findOne(int id) {
