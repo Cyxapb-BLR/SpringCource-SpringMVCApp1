@@ -11,8 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -97,5 +95,16 @@ public class BookController {
     public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson) {
         booksService.assign(id, selectedPerson);
         return "redirect:/books/" + id;
+    }
+
+    @GetMapping("/search")
+    public String searchPage() {
+        return "books/search";
+    }
+
+    @PostMapping("/search")
+    public String makeSearch(Model model, @RequestParam("query") String query) {
+        model.addAttribute("books", booksService.searchByTitle(query));
+        return "books/search";
     }
 }
