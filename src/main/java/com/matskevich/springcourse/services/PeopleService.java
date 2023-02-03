@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +57,12 @@ public class PeopleService {
             // (на случай, например, если код в дальнейшем поменяется и итерация по книгам удалится)
 
             // Проверка просроченности книг
-
+            person.get().getBooks().forEach(book -> {
+                long diffInMillies = Math.abs(book.getTakenAt().getTime() - new Date().getTime());
+                // 864000000 миллисекунд = 10 суток
+                if (diffInMillies > 864000000)
+                    book.setExpired(true);
+            });
             return person.get().getBooks();
         } else
             return Collections.emptyList();
