@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,8 +29,12 @@ public class BookController {
 
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("books", booksService.findAll());
+    public String index(Model model, @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear) {
+        List<Book> books = booksService.findAll();
+        if (sortByYear) {
+            books.sort(Comparator.comparingInt(Book::getYearOfPublishing));
+        }
+        model.addAttribute("books", books);
         return "books/index";
     }
 
