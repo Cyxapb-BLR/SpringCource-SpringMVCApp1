@@ -33,9 +33,8 @@ public class PeopleController {
         //get 1 person from DAO by id and sent it to View
         model.addAttribute("person", peopleService.findOne(id));
 
-        // !!!!!
-        //model.addAttribute("books", personDAO.getBookByPersonId(id));
-        // !!!!!
+        model.addAttribute("books", peopleService.getBooksByPersonId(id));
+
         return "people/show";
     }
 
