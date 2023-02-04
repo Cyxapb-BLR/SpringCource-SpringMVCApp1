@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,9 +28,10 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("com.matskevich.springcourse")
-@EnableWebMvc       // = <mvc:annotation-driven/>
 @PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
+@EnableJpaRepositories("com.matskevich.springcourse.repositories")
+@EnableWebMvc       // = <mvc:annotation-driven/>
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
     private final Environment environment;
@@ -71,7 +72,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public DataSource dataSource() {        // points to the database to connect to
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         // db config:
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getRequiredProperty("hibernate.driver_class")));
+        dataSource.setDriverClassName(environment.getRequiredProperty("hibernate.driver_class"));
         dataSource.setUrl(environment.getRequiredProperty("hibernate.connection.url"));
         dataSource.setUsername(environment.getRequiredProperty("hibernate.connection.username"));
         dataSource.setPassword(environment.getRequiredProperty("hibernate.connection.password"));
@@ -95,16 +96,17 @@ public class SpringConfig implements WebMvcConfigurer {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.matskevich.springcource.models");
+        sessionFactory.setPackagesToScan("com.matskevich.springcourse.models");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
     }
 
+    @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.matskevich.springcource.models");
+        em.setPackagesToScan("com.matskevich.springcourse.models");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -117,6 +119,7 @@ public class SpringConfig implements WebMvcConfigurer {
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        
         return transactionManager;
     }
 }
