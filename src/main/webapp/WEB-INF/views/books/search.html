@@ -11,7 +11,6 @@
     <br/>
     <input type="submit" value="Search"/>
 </form>
-
 <div th:if="${books}">
     <div th:if="${books.isEmpty()}">
         <span>No books found</span>
@@ -21,7 +20,9 @@
         <p th:text="|${book.getTitle()}, ${book.getAuthor()}, ${book.getYearOfPublishing()}|">book</p>
 
         <div th:if="${book.getBookOwner() != null}">
-            <span>The book is taken by: </span><span th:text="${book.getBookOwner().getName()}">Book owner name</span>
+            <span>The book is taken by: </span>
+            <a th:href="@{/people/{id}(id=${book.getBookOwner().getId()})}"
+               th:text="${book.getBookOwner().getName()}">Book owner name</a>
         </div>
 
         <div th:if="${book.getBookOwner() == null}">
@@ -30,5 +31,9 @@
         <hr/>
     </div>
 </div>
+<br/>
+<form action="/books">
+    <input type="submit" value="Return to books">
+</form>
 </body>
 </html>
